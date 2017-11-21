@@ -93,12 +93,12 @@ void QBizManager::SubmitTrade(const QString& rate)
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-	QString signature = publicKey + "POST" + url.toAscii().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toAscii(), QByteArray::fromBase64(secret.toAscii()), QCryptographicHash::Sha256).toBase64();
+    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -121,12 +121,12 @@ void QBizManager::SubmitTransfer(const QString& Username)
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-	QString signature = publicKey + "POST" + url.toAscii().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toAscii(), QByteArray::fromBase64(secret.toAscii()), QCryptographicHash::Sha256).toBase64();
+    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -147,12 +147,12 @@ void QBizManager::CancelTrade(const QString & OrderId)
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-	QString signature = publicKey + "POST" + url.toAscii().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toAscii(), QByteArray::fromBase64(secret.toAscii()), QCryptographicHash::Sha256).toBase64();
+    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -173,12 +173,12 @@ void QBizManager::GetTradeHistory()
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-	QString signature = publicKey + "POST" + url.toAscii().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toAscii(), QByteArray::fromBase64(secret.toAscii()), QCryptographicHash::Sha256).toBase64();
+    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -208,12 +208,12 @@ void QBizManager::GetBalance()
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-	QString signature = publicKey + "POST" + url.toAscii().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toAscii(), QByteArray::fromBase64(secret.toAscii()), QCryptographicHash::Sha256).toBase64();
+    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -236,12 +236,12 @@ void QBizManager::SubmitTip()
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-	QString signature = publicKey + "POST" + url.toAscii().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toAscii(), QByteArray::fromBase64(secret.toAscii()), QCryptographicHash::Sha256).toBase64();
+    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -329,7 +329,7 @@ void QBizManager::PostMessages(const QString& Username)
 
 	QString m;
 	QByteArray bb;
-	bb = QCryptographicHash::hash(post_data.toAscii(), QCryptographicHash::Md5);
+    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 	QString header_value = "amx ";
 
