@@ -1,20 +1,14 @@
+QT      += core gui network sql widgets
 
-
-QT       += core gui network sql widgets
-
-
-TARGET = GridTrade
+TARGET   = t
 TEMPLATE = app
 
+HEADERS += src/qbizmanager.h
+HEADERS += src/qhttpmanager.h
 
-HEADERS += \
-    src/qbizmanager.h \
-    src/qhttpmanager.h 
-
-SOURCES += \
-    src/main.cpp \
-    src/qbizmanager.cpp \
-    src/qhttpmanager.cpp 
+SOURCES += src/main.cpp
+SOURCES += src/qbizmanager.cpp
+SOURCES += src/qhttpmanager.cpp
 
 
 
