@@ -1,7 +1,7 @@
-QT      += core gui network sql widgets
+QT      += core network sql widgets
 
 TARGET   = t
-TEMPLATE = app
+CONFIG += console
 
 HEADERS += src/qbizmanager.h
 HEADERS += src/qhttpmanager.h
