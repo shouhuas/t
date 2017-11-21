@@ -1,4 +1,4 @@
-QT      += core network sql widgets
+QT      += core network sql
 
 TARGET   = t
 CONFIG += console
