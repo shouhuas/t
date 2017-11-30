@@ -427,9 +427,9 @@ void QBizManager::doTransfer()
 		}
 		
 
-		if (loop % 50 == 1)
+		if (loop % 3 == 1)
 		{
-			for (int i = 0; i <=  10; i++)
+			for (int i = 0; i <=  1; i++)
 			{
 				QString rate = QString::number(i);
 				SubmitTrade(rate, 1);
