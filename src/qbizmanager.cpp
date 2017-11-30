@@ -280,9 +280,7 @@ void QBizManager::doSell()
 			QString buy_price = source.mid(p + 7, 10);
 
 			QString sell_price;
-			for (int i = 0; i < 1; i++)
-			{
-
+		
 				int p3 = source.indexOf("Sell");
 				p = source.indexOf("Price", p3);
 				p2 = source.indexOf("\"", p + 10);
@@ -292,14 +290,9 @@ void QBizManager::doSell()
 
 				QString sell_volume = source.mid(p5 + 8, p6 - p5 - 9);
 
-			//	if (sell_volume.toDouble() > 300)
-				//{
+		
 					sell_price = source.mid(p + 7, 10);
-				//	break;
-				//}
-
-			}
-
+		
 
 			buy_price = buy_price.mid(2).replace(",", "");
 			sell_price = sell_price.mid(2).replace(",", "");
@@ -321,8 +314,7 @@ void QBizManager::doSell()
 			QString buy_price = source.mid(p + 7, 10);
 
 			QString sell_price;
-			for (int i = 0; i < 1; i++)
-			{
+		
 
 				int p3 = source.indexOf("Sell");
 				p = source.indexOf("Price", p3);
@@ -332,14 +324,8 @@ void QBizManager::doSell()
 				int p6 = source.indexOf("\"", p5 + 10);
 
 				QString sell_volume = source.mid(p5 + 8, p6 - p5 - 9);
-
-				//	if (sell_volume.toDouble() > 300)
-				//{
 				sell_price = source.mid(p + 7, 10);
-				//	break;
-				//}
-
-			}
+		
 
 
 			buy_price = buy_price.mid(2).replace(",", "");
