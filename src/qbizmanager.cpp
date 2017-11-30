@@ -79,7 +79,7 @@ QBizManager::~QBizManager()
 }
 
 
-void QBizManager::SubmitTrade(const QString& rate)
+void QBizManager::SubmitTrade(const QString& rate, int buysell)
 {
 	QString secret = "m//zW/FBxXC8akWe5zBR8LUiK2RJLgF7kxcdUD5AwLs=";
 	QString publicKey = "853384ce523546008b9592739287c2d6";
@@ -87,18 +87,28 @@ void QBizManager::SubmitTrade(const QString& rate)
 
 	QString url = "https://www.cryptopia.co.nz/api/SubmitTrade";
 	QString nonce = QString("c6%1").arg(QDateTime::currentMSecsSinceEpoch()).mid(5, 9);
-	QString amount = QString::number( 90 - nonce.mid(7,1).toInt() - nonce.mid(7, 1).toInt() /7.0 + nonce.mid(8, 1).toInt() + nonce.mid(8, 1).toInt() / 3.0);
+	QString amount = QString::number(90 - nonce.mid(7, 1).toInt() - nonce.mid(7, 1).toInt() / 7.0 + nonce.mid(8, 1).toInt() + nonce.mid(8, 1).toInt() / 3.0);
 
-    QString post_data =  "{\"TradePairId\": null,\"Market\":\"LIZI/BTC\",\"Type\":0,\"Rate\":0.000000"+ rate +",\"Amount\":" + amount + "}";
+	QString strbuysell = QString::number(buysell);
+
+	QString str_Rate = "0.00000" + rate;
+	if(rate.length()==2)
+		str_Rate = "0.000000" + rate;
+	if (rate.length() == 3)
+		str_Rate = "0.00000" + rate;
+	if (rate.length() == 4)
+		str_Rate = "0.0000" + rate;
+
+	QString post_data = "{\"TradePairId\": null,\"Market\":\"LIZI/BTC\",\"Type\":" + strbuysell + ",\"Rate\":" + str_Rate + ",\"Amount\":" + amount + "}";
 
 	QString m;
 	QByteArray bb;
-    bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
+	bb = QCryptographicHash::hash(post_data.toLatin1(), QCryptographicHash::Md5);
 	m.append(bb.toBase64());
 
 	QString requestContentBase64String = m;
-    QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
-    QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
+	QString signature = publicKey + "POST" + url.toLatin1().toPercentEncoding().toLower() + nonce + requestContentBase64String;
+	QString hmacsignature = QMessageAuthenticationCode::hash(signature.toLatin1(), QByteArray::fromBase64(secret.toLatin1()), QCryptographicHash::Sha256).toBase64();
 	QString header_value = "amx " + publicKey + ":" + hmacsignature + ":" + nonce;
 
 	QByteArray send;
@@ -252,17 +262,107 @@ void QBizManager::SubmitTip()
 
 void QBizManager::doSell()
 {
-    QString b_buy_price;
-    while (1)
-    {
+	int loop = 0;
+	int int_buy_price = 0;
+	int int_sell_price = 0;
+	while (1)
+	{
+		if (int_buy_price == 0)
+		{
 
-        QEventLoop loop;
-        QTimer::singleShot(1000*60*3, &loop, SLOT(quit()));
-        loop.exec();
+			doCancle();
 
-        continue;
-    }
-    return;
+			QString source;
+			QHttpManager::GetInstance().HttpGet("https://www.cryptopia.co.nz/api/GetMarketOrders/LIZI_BTC", source);
+
+			int p = source.indexOf("Price");
+			int p2 = source.indexOf("\"", p + 10);
+			QString buy_price = source.mid(p + 7, 10);
+
+			QString sell_price;
+			for (int i = 0; i < 1; i++)
+			{
+
+				int p3 = source.indexOf("Sell");
+				p = source.indexOf("Price", p3);
+				p2 = source.indexOf("\"", p + 10);
+
+				int p5 = source.indexOf("Volume", p2);
+				int p6 = source.indexOf("\"", p5 + 10);
+
+				QString sell_volume = source.mid(p5 + 8, p6 - p5 - 9);
+
+			//	if (sell_volume.toDouble() > 300)
+				//{
+					sell_price = source.mid(p + 7, 10);
+				//	break;
+				//}
+
+			}
+
+
+			buy_price = buy_price.mid(2).replace(",", "");
+			sell_price = sell_price.mid(2).replace(",", "");
+			int_buy_price = sell_price.toInt();
+			int_sell_price = sell_price.toInt();
+
+		}
+
+		if (loop % 10 == 1)
+		{
+
+			doCancle();
+
+			QString source;
+			QHttpManager::GetInstance().HttpGet("https://www.cryptopia.co.nz/api/GetMarketOrders/LIZI_BTC", source);
+
+			int p = source.indexOf("Price");
+			int p2 = source.indexOf("\"", p + 10);
+			QString buy_price = source.mid(p + 7, 10);
+
+			QString sell_price;
+			for (int i = 0; i < 1; i++)
+			{
+
+				int p3 = source.indexOf("Sell");
+				p = source.indexOf("Price", p3);
+				p2 = source.indexOf("\"", p + 10);
+
+				int p5 = source.indexOf("Volume", p2);
+				int p6 = source.indexOf("\"", p5 + 10);
+
+				QString sell_volume = source.mid(p5 + 8, p6 - p5 - 9);
+
+				//	if (sell_volume.toDouble() > 300)
+				//{
+				sell_price = source.mid(p + 7, 10);
+				//	break;
+				//}
+
+			}
+
+
+			buy_price = buy_price.mid(2).replace(",", "");
+			sell_price = sell_price.mid(2).replace(",", "");
+			int_buy_price = sell_price.toInt();
+			int_sell_price = sell_price.toInt();
+
+		}
+
+		doCancle();
+
+		if (int_sell_price == 0)
+			continue;
+
+		for (int i = int_sell_price; i <= int_sell_price + 10; i++)
+		{
+			QString rate = QString::number(i);
+			SubmitTrade(rate, 1);
+		}
+
+		loop++;
+	}
+	return;
 }
 
 void QBizManager::doTransfer()
@@ -283,7 +383,7 @@ void QBizManager::doTransfer()
 			b_buy_price = buy_price;
 		}
 
-		if (loop % 1000 == 1)
+		if (loop % 15 == 1)
 		{
 			QString source;
 			QHttpManager::GetInstance().HttpGet("https://www.cryptopia.co.nz/api/GetMarketOrders/LIZI_BTC", source);
@@ -299,7 +399,7 @@ void QBizManager::doTransfer()
 		for (int i = NN; i >= NN-10; i--)
 		{
 			QString rate = QString::number(i);		
-			SubmitTrade(rate);
+			SubmitTrade(rate,0);
 		}
 		loop++;
     }
