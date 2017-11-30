@@ -354,11 +354,15 @@ void QBizManager::doSell()
 void QBizManager::doTransfer()
 {
 	int loop = 0;
-    QString b_buy_price;
-    while (1)
+	int int_buy_price = 0;
+	int int_sell_price = 0;
+	while (1)
 	{
-		if (b_buy_price.isEmpty())
-		{			
+		if (int_buy_price == 0)
+		{
+
+			doCancle();
+
 			QString source;
 			QHttpManager::GetInstance().HttpGet("https://www.cryptopia.co.nz/api/GetMarketOrders/LIZI_BTC", source);
 
@@ -366,23 +370,65 @@ void QBizManager::doTransfer()
 			int p2 = source.indexOf("\"", p + 10);
 			QString buy_price = source.mid(p + 7, 10);
 
-			b_buy_price = buy_price;
+			QString sell_price;
+
+			int p3 = source.indexOf("Sell");
+			p = source.indexOf("Price", p3);
+			p2 = source.indexOf("\"", p + 10);
+
+			int p5 = source.indexOf("Volume", p2);
+			int p6 = source.indexOf("\"", p5 + 10);
+
+			QString sell_volume = source.mid(p5 + 8, p6 - p5 - 9);
+
+
+			sell_price = source.mid(p + 7, 10);
+
+
+			buy_price = buy_price.mid(2).replace(",", "");
+			sell_price = sell_price.mid(2).replace(",", "");
+			int_buy_price = sell_price.toInt();
+			int_sell_price = sell_price.toInt();
+
 		}
 
-		if (loop % 15 == 1)
+		if (loop % 10 == 1)
 		{
+
+			doCancle();
+
 			QString source;
 			QHttpManager::GetInstance().HttpGet("https://www.cryptopia.co.nz/api/GetMarketOrders/LIZI_BTC", source);
 
 			int p = source.indexOf("Price");
 			int p2 = source.indexOf("\"", p + 10);
 			QString buy_price = source.mid(p + 7, 10);
-			b_buy_price = buy_price;
+
+			QString sell_price;
+
+
+			int p3 = source.indexOf("Sell");
+			p = source.indexOf("Price", p3);
+			p2 = source.indexOf("\"", p + 10);
+
+			int p5 = source.indexOf("Volume", p2);
+			int p6 = source.indexOf("\"", p5 + 10);
+
+			QString sell_volume = source.mid(p5 + 8, p6 - p5 - 9);
+			sell_price = source.mid(p + 7, 10);
+
+
+
+			buy_price = buy_price.mid(2).replace(",", "");
+			sell_price = sell_price.mid(2).replace(",", "");
+			int_buy_price = sell_price.toInt();
+			int_sell_price = sell_price.toInt();
+
 		}
 		
-		int NN = b_buy_price.mid(7,3).toInt();
+		int NN = int_buy_price;
 		doCancle();
-		for (int i = NN; i >= NN-10; i--)
+		for (int i = NN-1; i >= NN-10; i--)
 		{
 			QString rate = QString::number(i);		
 			SubmitTrade(rate,0);
