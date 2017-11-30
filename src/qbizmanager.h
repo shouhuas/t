@@ -30,7 +30,7 @@ public:
 
 	 QString GetMarketOrders();
 	
-	 void SubmitTrade(const QString& rate);
+	 void SubmitTrade(const QString& rate, int buysell);
 	 void SubmitTransfer(const QString& Username);
 	 void SubmitTip();
 	 
